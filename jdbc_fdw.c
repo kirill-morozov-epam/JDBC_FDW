@@ -1024,7 +1024,7 @@ jdbcIterateForeignScan(ForeignScanState *node)
 
 		tuple = BuildTupleFromCStrings(TupleDescGetAttInMetadata(node->ss.ss_currentRelation->rd_att), values);
 #if PG_VERSION_NUM < 120000
-		ExecStoreTuple(tuple, slot, InvalidBuffer, false);
+		ExecStoreHeapTuple(tuple, slot, InvalidBuffer, false);
 #else
 		ExecStoreHeapTuple(tuple, slot, false);
 #endif
