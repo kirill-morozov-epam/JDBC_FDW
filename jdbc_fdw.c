@@ -878,7 +878,6 @@ jdbcBeginForeignScan(ForeignScanState *node, int eflags)
 	festate->NumberOfRows = 0;
 
     ereport(LOG,(errmsg("enter to jdbcBeginForeignScan : Connect to the server and execute the query")));
-
 	/* Connect to the server and execute the query */
 	JDBCUtilsClass = (*env)->FindClass(env, "JDBCUtils");
 	if (JDBCUtilsClass == NULL) 
@@ -886,12 +885,14 @@ jdbcBeginForeignScan(ForeignScanState *node, int eflags)
 		elog(ERROR, "JDBCUtilsClass is NULL");
 	}
 
+    ereport(LOG,(errmsg("enter to jdbcBeginForeignScan : id_initialize = (*env)->GetMethodID(env, JDBCUtilsClass")));
 	id_initialize = (*env)->GetMethodID(env, JDBCUtilsClass, "Initialize", "([Ljava/lang/String;)Ljava/lang/String;");
 	if (id_initialize == NULL) 
 	{
 		elog(ERROR, "id_initialize is NULL");
 	}
 
+    ereport(LOG,(errmsg("enter to jdbcBeginForeignScan : id_numberofcolumns = (*env)->GetFieldID(env, JDBCUtilsClass")));
 	id_numberofcolumns = (*env)->GetFieldID(env, JDBCUtilsClass, "NumberOfColumns" , "I");
 	if (id_numberofcolumns == NULL)
 	{
