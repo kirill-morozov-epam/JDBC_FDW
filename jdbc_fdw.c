@@ -643,7 +643,7 @@ jdbcGetOptions(Oid foreigntableid, char **drivername, char **url, int *querytime
 	List		*options;
 	ListCell	*lc;
 
-    elog(DEBUG3, "enter to jdbcGetOptions");
+    ereport(LOG,(errmsg("enter to jdbcGetOptions")));
 
 	/*
 	 * Extract options from FDW objects.
@@ -729,7 +729,7 @@ jdbcPlanForeignScan(Oid foreigntableid, PlannerInfo *root, RelOptInfo *baserel)
 	int 		svr_maxheapsize = 0;
 	char		*query;
 
-    elog(DEBUG3, "enter to jdbcPlanForeignScan");
+    ereport(LOG,(errmsg("enter to jdbcPlanForeignScan")));
 
 	SIGINTInterruptCheckProcess(NULL);
 
@@ -787,7 +787,7 @@ jdbcExplainForeignScan(ForeignScanState *node, ExplainState *es)
 	int 		    svr_querytimeout = 0;
 	int 		    svr_maxheapsize = 0;
 
-    elog(DEBUG3, "enter to jdbcExplainForeignScan");
+    ereport(LOG,(errmsg("enter to jdbcExplainForeignScan")));
 
 	/* Fetch options  */
 	jdbcGetOptions(
@@ -839,7 +839,7 @@ jdbcBeginForeignScan(ForeignScanState *node, int eflags)
 	char 			strpkglibdir[] = STR_PKGLIBDIR;
 	char 			*initialize_result_cstring = NULL;
 
-    elog(DEBUG3, "enter to jdbcBeginForeignScan");
+    ereport(LOG,(errmsg("enter to jdbcBeginForeignScan")));
 
 	SIGINTInterruptCheckProcess(NULL);
 
@@ -988,7 +988,7 @@ jdbcIterateForeignScan(ForeignScanState *node)
 	TupleTableSlot *slot = node->ss.ss_ScanTupleSlot;
 	jobject 		java_call = festate->java_call;
 
-    elog(DEBUG3, "enter to jdbcIterateForeignScan");
+    ereport(LOG,(errmsg("enter to jdbcIterateForeignScan")));
 
 	/* Cleanup */
 	ExecClearTuple(slot);
@@ -1082,7 +1082,7 @@ jdbcEndForeignScan(ForeignScanState *node)
 
 	PG_TRY();
 	{
-        elog(DEBUG3, "enter to jdbcEndForeignScan");
+        ereport(LOG,(errmsg("enter to jdbcEndForeignScan")));
 		JDBCUtilsClass = (*env)->FindClass(env, "JDBCUtils");
 		if (JDBCUtilsClass == NULL) 
 		{
@@ -1123,7 +1123,7 @@ jdbcEndForeignScan(ForeignScanState *node)
 static void
 jdbcReScanForeignScan(ForeignScanState *node)
 {
-    elog(DEBUG3, "enter to jdbcReScanForeignScan");
+    ereport(LOG,(errmsg("enter to jdbcReScanForeignScan")));
     SIGINTInterruptCheckProcess((jdbcFdwExecutionState **)&(node->fdw_state));
 }
 
@@ -1138,7 +1138,7 @@ jdbcGetForeignPaths(PlannerInfo *root, RelOptInfo *baserel, Oid foreigntableid)
 	Cost 		startup_cost = 0;
 	Cost 		total_cost = 0;
 
-	elog(DEBUG3, "enter to jdbcGetForeignPaths");
+	ereport(LOG,(errmsg("enter to jdbcGetForeignPaths")));
 
 	SIGINTInterruptCheckProcess(NULL);
 
@@ -1173,7 +1173,7 @@ Plan *outer_plan
 #endif
 )
 {
-    elog(DEBUG3, "enter to jdbcGetForeignPlan");
+    ereport(LOG,(errmsg("enter to jdbcGetForeignPlan")));
 
 	Index 		scan_relid = baserel->relid;
 
@@ -1202,8 +1202,7 @@ static void
 jdbcGetForeignRelSize(PlannerInfo *root, RelOptInfo *baserel, Oid foreigntableid)
 {
 //    elog(DEBUG3, "debug3-enter to jdbcGetForeignRelSize");
-    ereport(LOG,
-			(errmsg("debug4-enter to jdbcGetForeignRelSize ")));
+    ereport(LOG,(errmsg("debug4-enter to jdbcGetForeignRelSize ")));
 	SIGINTInterruptCheckProcess(NULL);
 }
 #endif
