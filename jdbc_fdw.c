@@ -1082,6 +1082,7 @@ jdbcEndForeignScan(ForeignScanState *node)
 
 	PG_TRY();
 	{
+        elog(ERROR, "enter to jdbcEndForeignScan");
 		JDBCUtilsClass = (*env)->FindClass(env, "JDBCUtils");
 		if (JDBCUtilsClass == NULL) 
 		{
