@@ -1201,7 +1201,7 @@ outer_plan
 static void
 jdbcGetForeignRelSize(PlannerInfo *root, RelOptInfo *baserel, Oid foreigntableid)
 {
-    elog(DEBUG3, "enter to jdbcGetForeignRelSize");
+    elog(DEBUG3, "debug3-enter to jdbcGetForeignRelSize");
 	SIGINTInterruptCheckProcess(NULL);
 }
 #endif
