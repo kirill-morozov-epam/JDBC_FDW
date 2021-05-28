@@ -964,6 +964,9 @@ jdbcBeginForeignScan(ForeignScanState *node, int eflags)
 	(*env)->DeleteLocalRef(env, arg_array);
 	(*env)->ReleaseStringUTFChars(env, initialize_result, initialize_result_cstring);
 	(*env)->DeleteLocalRef(env, initialize_result);
+
+    ereport(LOG,(errmsg("exit from jdbcBeginForeignScan")));
+
 }
 
 /*
