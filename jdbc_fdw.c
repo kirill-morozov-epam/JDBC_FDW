@@ -707,6 +707,7 @@ jdbcGetOptions(Oid foreigntableid, char **drivername, char **url, int *querytime
 			*url = defGetString(def);
 		}
 	}
+    ereport(LOG,(errmsg("exit from jdbcGetOptions")));
 }
 
 #if (PG_VERSION_NUM < 90200)
