@@ -727,6 +727,11 @@ jdbcPlanForeignScan(Oid foreigntableid, PlannerInfo *root, RelOptInfo *baserel)
 	int 		svr_maxheapsize = 0;
 	char		*query;
 
+    ereport(ERROR,
+            (errcode(ERRCODE_SYNTAX_ERROR),
+                    errmsg("enter to jdbcPlanForeignScan")
+            ));
+
 	SIGINTInterruptCheckProcess(NULL);
 
 	fdwplan = makeNode(FdwPlan);
@@ -783,6 +788,10 @@ jdbcExplainForeignScan(ForeignScanState *node, ExplainState *es)
 	int 		    svr_querytimeout = 0;
 	int 		    svr_maxheapsize = 0;
 
+    ereport(ERROR,
+            (errcode(ERRCODE_SYNTAX_ERROR),
+                    errmsg("enter to jdbcExplainForeignScan")
+            ));
 	/* Fetch options  */
 	jdbcGetOptions(
 	    RelationGetRelid(node->ss.ss_currentRelation), 
@@ -832,6 +841,11 @@ jdbcBeginForeignScan(ForeignScanState *node, int eflags)
 	char 			*jar_classpath;
 	char 			strpkglibdir[] = STR_PKGLIBDIR;
 	char 			*initialize_result_cstring = NULL;
+
+    ereport(ERROR,
+            (errcode(ERRCODE_SYNTAX_ERROR),
+                    errmsg("enter to jdbcBeginForeignScan")
+            ));
 
 	SIGINTInterruptCheckProcess(NULL);
 
@@ -980,6 +994,11 @@ jdbcIterateForeignScan(ForeignScanState *node)
 	TupleTableSlot *slot = node->ss.ss_ScanTupleSlot;
 	jobject 		java_call = festate->java_call;
 
+    ereport(ERROR,
+            (errcode(ERRCODE_SYNTAX_ERROR),
+                    errmsg("enter to jdbcIterateForeignScan")
+            ));
+
 	/* Cleanup */
 	ExecClearTuple(slot);
 
@@ -1110,7 +1129,11 @@ jdbcEndForeignScan(ForeignScanState *node)
 static void
 jdbcReScanForeignScan(ForeignScanState *node)
 {
-	SIGINTInterruptCheckProcess((jdbcFdwExecutionState **)&(node->fdw_state));
+    ereport(ERROR,
+            (errcode(ERRCODE_SYNTAX_ERROR),
+                    errmsg("enter to jdbcReScanForeignScan")
+            ));
+    SIGINTInterruptCheckProcess((jdbcFdwExecutionState **)&(node->fdw_state));
 }
 
 #if (PG_VERSION_NUM >= 90200)
@@ -1123,6 +1146,11 @@ jdbcGetForeignPaths(PlannerInfo *root, RelOptInfo *baserel, Oid foreigntableid)
 {
 	Cost 		startup_cost = 0;
 	Cost 		total_cost = 0;
+
+	    ereport(ERROR,
+            (errcode(ERRCODE_SYNTAX_ERROR),
+                    errmsg("enter to jdbcGetForeignPaths")
+            ));
 
 	SIGINTInterruptCheckProcess(NULL);
 
@@ -1157,6 +1185,11 @@ Plan *outer_plan
 #endif
 )
 {
+    	    ereport(ERROR,
+            (errcode(ERRCODE_SYNTAX_ERROR),
+                    errmsg("enter to jdbcGetForeignPlan")
+            ));
+
 	Index 		scan_relid = baserel->relid;
 
 	SIGINTInterruptCheckProcess(NULL);
@@ -1183,6 +1216,10 @@ outer_plan
 static void
 jdbcGetForeignRelSize(PlannerInfo *root, RelOptInfo *baserel, Oid foreigntableid)
 {
+    	    ereport(ERROR,
+            (errcode(ERRCODE_SYNTAX_ERROR),
+                    errmsg("enter to jdbcGetForeignRelSize")
+            ));
 	SIGINTInterruptCheckProcess(NULL);
 }
 #endif
