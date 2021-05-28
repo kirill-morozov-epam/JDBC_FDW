@@ -877,6 +877,8 @@ jdbcBeginForeignScan(ForeignScanState *node, int eflags)
 	festate->NumberOfColumns = 0;
 	festate->NumberOfRows = 0;
 
+    ereport(LOG,(errmsg("enter to jdbcBeginForeignScan : Connect to the server and execute the query")));
+
 	/* Connect to the server and execute the query */
 	JDBCUtilsClass = (*env)->FindClass(env, "JDBCUtils");
 	if (JDBCUtilsClass == NULL) 
@@ -895,7 +897,9 @@ jdbcBeginForeignScan(ForeignScanState *node, int eflags)
 	{
 		elog(ERROR, "id_numberofcolumns is NULL");
 	}
-	
+
+    ereport(LOG,(errmsg("enter to jdbcBeginForeignScan : querytimeoutstr = (char*)palloc(sizeof(int));")));
+
 	querytimeoutstr = (char*)palloc(sizeof(int));
 	jar_classpath = (char*)palloc(strlen(strpkglibdir) + strlen(svr_jarfile) + 2);
 
@@ -911,7 +915,8 @@ jdbcBeginForeignScan(ForeignScanState *node, int eflags)
 	{
 		svr_password = "";
 	}
-	
+
+    ereport(LOG,(errmsg("enter to jdbcBeginForeignScan : StringArray[0] = (*env)->NewStringUTF(env, (festate->query));")));
 	StringArray[0] = (*env)->NewStringUTF(env, (festate->query));
 	StringArray[1] = (*env)->NewStringUTF(env, svr_drivername);
 	StringArray[2] = (*env)->NewStringUTF(env, svr_url);
@@ -932,7 +937,8 @@ jdbcBeginForeignScan(ForeignScanState *node, int eflags)
 	{		
 		(*env)->SetObjectArrayElement(env, arg_array, counter, StringArray[counter]);
 	}
-	
+
+    ereport(LOG,(errmsg("enter to jdbcBeginForeignScan : java_call = (*env)->AllocObject(env, JDBCUtilsClass);")));
 	java_call = (*env)->AllocObject(env, JDBCUtilsClass);
 	if (java_call == NULL)
 	{
@@ -953,14 +959,16 @@ jdbcBeginForeignScan(ForeignScanState *node, int eflags)
 		elog(ERROR, "%s", initialize_result_cstring);
 	}
 
+    ereport(LOG,(errmsg("enter to jdbcBeginForeignScan : node->fdw_state = (void *) festate;")));
 	node->fdw_state = (void *) festate;
 	festate->NumberOfColumns = (*env)->GetIntField(env, java_call, id_numberofcolumns);
 
 	for (referencedeletecounter = 0; referencedeletecounter < 7; referencedeletecounter++)
 	{
 		(*env)->DeleteLocalRef(env, StringArray[referencedeletecounter]);
-	}	
-	
+	}
+
+    ereport(LOG,(errmsg("enter to jdbcBeginForeignScan : (*env)->DeleteLocalRef(env, arg_array);")));
 	(*env)->DeleteLocalRef(env, arg_array);
 	(*env)->ReleaseStringUTFChars(env, initialize_result, initialize_result_cstring);
 	(*env)->DeleteLocalRef(env, initialize_result);
