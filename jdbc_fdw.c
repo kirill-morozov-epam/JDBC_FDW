@@ -1076,7 +1076,7 @@ jdbcEndForeignScan(ForeignScanState *node)
 	jdbcFdwExecutionState *festate = (jdbcFdwExecutionState *) node->fdw_state;
 	jobject 			java_call = festate->java_call;
 
-    elog(ERROR, "enter to jdbcEndForeignScan");
+//    elog(ERROR, "enter to jdbcEndForeignScan");
 
 	SIGINTInterruptCheckProcess((jdbcFdwExecutionState **)&(node->fdw_state));
 
