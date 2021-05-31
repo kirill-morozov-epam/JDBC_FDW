@@ -1043,8 +1043,10 @@ jdbcIterateForeignScan(ForeignScanState *node)
 		for (i = 0; i < (festate->NumberOfColumns); i++) 
 		{
         		values[i] = ConvertStringToCString((jobject)(*env)->GetObjectArrayElement(env, java_rowarray, i));
+            ereport(LOG, (errmsg("In JQiterate 501 %d: %s", i, values[i])));
     		}
-
+        attinmeta = TupleDescGetAttInMetadata(node->ss.ss_currentRelation->rd_att);
+        ereport(LOG,(errmsg("In JQiterate 511: %d", attinmeta->tupdesc->natts)));
 		tuple = BuildTupleFromCStrings(TupleDescGetAttInMetadata(node->ss.ss_currentRelation->rd_att), values);
 #if PG_VERSION_NUM < 120000
 		ExecStoreHeapTuple(tuple, slot, InvalidBuffer, false);
