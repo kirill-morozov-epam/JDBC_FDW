@@ -1000,6 +1000,7 @@ jdbcIterateForeignScan(ForeignScanState *node)
 	jdbcFdwExecutionState *festate = (jdbcFdwExecutionState *) node->fdw_state;
 	TupleTableSlot *slot = node->ss.ss_ScanTupleSlot;
 	jobject 		java_call = festate->java_call;
+    AttInMetadata *attinmeta;
 
     ereport(LOG,(errmsg("enter to jdbcIterateForeignScan")));
 
